@@ -4,8 +4,8 @@ import logging
 
 HOST = 'smtp.gmail.com'
 PORT = 465
-USERNAME = os.environ['USERNAME']
-PASSWORD = os.environ['PASSWORD']
+USERNAME = os.environ.get('EMAIL')
+PASSWORD = os.environ.get('PASSWORD')
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

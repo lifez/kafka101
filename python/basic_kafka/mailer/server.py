@@ -1,20 +1,24 @@
 from sanic import Sanic, response
 
-from . import auto_poll, producer
+import auto_poll
+import producer
 
 app = Sanic()
 poll_task = None
 
+
 @app.listener('after_server_start')
 async def start_poll_loop(app, loop):
-    global poll_task 
+    global poll_task
     poll_task = auto_poll.start(producer.producer, 1, loop)
+
 
 @app.listener('before_server_stop')
 async def cancel_remaining_task(app, loop):
     producer.producer.flush()
     if poll_task:
        poll_task.cancel()
+
 
 @app.post('/mailto/<email>')
 async def mailto(request, email):
